@@ -17,29 +17,6 @@ const Login = ({ setAuth }) => {
 
   const onSubmitForm = async (e) => {
     e.preventDefault()
-    try {
-      const body = { email, password }
-      const { data } = await axios.post(
-        'http://localhost:5000/authentication/login',
-        body,
-        {
-          headers: {
-            'Content-type': 'application/json',
-          },
-        }
-      )
-
-      if (data.jwtToken) {
-        localStorage.setItem('token', data.jwtToken)
-        setAuth(true)
-        toast.success('Logged in Successfully')
-      } else {
-        setAuth(false)
-        toast.error(data)
-      }
-    } catch (err) {
-      console.error(err.message)
-    }
   }
 
   return (
