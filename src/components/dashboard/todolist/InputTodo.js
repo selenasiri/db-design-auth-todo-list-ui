@@ -8,19 +8,15 @@ const InputTodo = ({ setTodosChange }) => {
     e.preventDefault()
     try {
       const body = { description }
-      
-      await axios.post(
-        'http://localhost:5000/dashboard/todos',
-        body,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            jwt_token: localStorage.getItem('token'),
-          },
-        }
-      )
 
-      setTodosChange(true)
+      await axios.post('http://localhost:5000/dashboard/todos', body, {
+        headers: {
+          'Content-Type': 'application/json',
+          jwt_token: localStorage.getItem('token'),
+        },
+      })
+
+      setTodosChange(true) //final step (see Dashboard notes)
       setDescription('')
     } catch (err) {
       console.error(err.message)

@@ -11,10 +11,12 @@ const Dashboard = ({ setAuth }) => {
   const [name, setName] = useState('')
   const [allTodos, setAllTodos] = useState([])
   const [todosChange, setTodosChange] = useState(false)
+  //set to false, and watch for useEffect to change
+  //then pass setTodosChange function in <InputTodo />
 
   const getProfile = async () => {
     try {
-      const {data} = await axios.get('http://localhost:5000/dashboard/', {
+      const { data } = await axios.get('http://localhost:5000/dashboard/', {
         headers: { jwt_token: localStorage.getItem('token') },
       })
 
@@ -58,3 +60,8 @@ const Dashboard = ({ setAuth }) => {
 }
 
 export default Dashboard
+
+//Problem: Why can we add a new todo but it doesn't pass down to our list below?
+//we must set todosChanged to true in InputTodo.js for it to work (adding todo item)
+
+//Once things change in the state it will run GET
