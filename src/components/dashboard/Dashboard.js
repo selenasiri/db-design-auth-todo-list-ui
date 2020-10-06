@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '../../actions/authActions'
+import { Redirect } from 'react-router-dom'
 
 //components
 
@@ -8,6 +11,12 @@ import InputTodo from './todolist/InputTodo'
 import ListTodos from './todolist/ListTodos'
 
 const Dashboard = ({ setAuth }) => {
+  const isAuthenticated = useSelector((state) =>
+    state.auth ? state.auth.isAuthenticated : false
+  )
+  const dispatch = useDispatch()
+  const user = useSelector((state) => (state.auth ? state.auth.user : null))
+
   const [name, setName] = useState('')
   const [allTodos, setAllTodos] = useState([])
   const [todosChange, setTodosChange] = useState(false)
@@ -17,7 +26,7 @@ const Dashboard = ({ setAuth }) => {
   const getProfile = async () => {
     try {
       const { data } = await axios.get('http://localhost:5000/dashboard/', {
-        headers: { jwt_token: localStorage.getItem('token') },
+        headers: { token: localStorage.getItem('token') },
       })
 
       setAllTodos(data)
@@ -28,15 +37,10 @@ const Dashboard = ({ setAuth }) => {
     }
   }
 
-  const logout = async (e) => {
+  const logout123 = async (e) => {
     e.preventDefault()
-    try {
-      localStorage.removeItem('token')
-      setAuth(false)
-      toast.success('Logout successfully')
-    } catch (err) {
-      console.error(err.message)
-    }
+
+    dispatch(logout())
   }
 
   useEffect(() => {
@@ -44,11 +48,15 @@ const Dashboard = ({ setAuth }) => {
     setTodosChange(false)
   }, [todosChange])
 
+  if (!isAuthenticated) {
+    return <Redirect to='/login' />
+  }
+
   return (
     <div>
       <div className='d-flex mt-5 justify-content-around'>
-        <h2>{name} 's Todo List</h2>
-        <button onClick={(e) => logout(e)} className='btn btn-primary'>
+        <h2>{user.name} 's Todo List</h2>
+        <button onClick={(e) => logout123(e)} className='btn btn-primary'>
           Logout
         </button>
       </div>

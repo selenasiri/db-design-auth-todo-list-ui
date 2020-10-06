@@ -1,10 +1,18 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../actions/authActions'
+import { Redirect } from 'react-router-dom'
 
 import { toast } from 'react-toastify'
 
 const Login = ({ setAuth }) => {
+  const isAuthenticated = useSelector((state) =>
+    state.auth ? state.auth.isAuthenticated : false
+  )
+
+  const dispatch = useDispatch()
+
   const [inputs, setInputs] = useState({
     email: '',
     password: '',
@@ -17,6 +25,12 @@ const Login = ({ setAuth }) => {
 
   const onSubmitForm = async (e) => {
     e.preventDefault()
+
+    dispatch(login(email, password))
+  }
+
+  if (isAuthenticated) {
+    return <Redirect to='/dashboard' />
   }
 
   return (

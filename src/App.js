@@ -16,7 +16,6 @@ import Login from './components/Login'
 import Register from './components/Register'
 import Dashboard from './components/dashboard/Dashboard'
 import Landing from './components/Landing'
-import axios from 'axios'
 
 import { Provider } from 'react-redux'
 import { store } from './store'
@@ -24,77 +23,15 @@ import { store } from './store'
 toast.configure()
 
 function App() {
-  const checkAuthenticated = async () => {
-    try {
-      const { data } = await axios.get(
-        'http://localhost:5000/authentication/verify'
-      )
-
-      data === true ? setIsAuthenticated(true) : setIsAuthenticated(false)
-    } catch (err) {
-      console.error(err.message)
-    }
-  }
-
-  useEffect(() => {
-    checkAuthenticated()
-  }, [])
-
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-
-  const setAuth = (boolean) => {
-    setIsAuthenticated(boolean)
-  }
-
   return (
     <Provider store={store}>
       <Router>
         <div className='container'>
           <Switch>
-            <Route
-              exact
-              path='/'
-              render={(props) =>
-                !isAuthenticated ? (
-                  <Landing {...props} />
-                ) : (
-                  <Redirect to='/dashboard' />
-                )
-              }
-            />
-            <Route
-              exact
-              path='/login'
-              render={(props) =>
-                !isAuthenticated ? (
-                  <Login {...props} setAuth={setAuth} />
-                ) : (
-                  <Redirect to='/dashboard' />
-                )
-              }
-            />
-            <Route
-              exact
-              path='/register'
-              render={(props) =>
-                !isAuthenticated ? (
-                  <Register {...props} setAuth={setAuth} />
-                ) : (
-                  <Redirect to='/dashboard' />
-                )
-              }
-            />
-            <Route
-              exact
-              path='/dashboard'
-              render={(props) =>
-                isAuthenticated ? (
-                  <Dashboard {...props} setAuth={setAuth} />
-                ) : (
-                  <Redirect to='/login' />
-                )
-              }
-            />
+            <Route exact path='/' component={Landing} />
+            <Route exact path='/login' component={Login} />
+            <Route exact path='/register' component={Register} />
+            <Route exact path='/dashboard' component={Dashboard} />
           </Switch>
         </div>
       </Router>

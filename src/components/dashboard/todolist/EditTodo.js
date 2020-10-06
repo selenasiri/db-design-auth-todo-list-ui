@@ -18,7 +18,7 @@ const EditTodo = ({ todo, setTodosChange }) => {
         {
           headers: {
             'Content-Type': 'application/json',
-            jwt_token: localStorage.getItem('token'),
+            token: localStorage.getItem('token'),
           },
         }
       )

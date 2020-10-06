@@ -20,7 +20,7 @@ const Register = ({ setAuth }) => {
     try {
       const body = { email, password, name }
       const { data } = await axios.post(
-        'http://localhost:5000/authentication/register',
+        'http://localhost:5000/auth/register',
         body,
         {
           headers: {
@@ -29,8 +29,8 @@ const Register = ({ setAuth }) => {
         }
       )
 
-      if (data.jwtToken) {
-        localStorage.setItem('token', data.jwtToken)
+      if (data.token) {
+        localStorage.setItem('token', data.token)
         setAuth(true)
         toast.success('Register Successfully')
       } else {

@@ -11,7 +11,7 @@ const ListTodos = ({ allTodos, setTodosChange }) => {
   async function deleteTodo(id) {
     try {
       await axios.delete(`http://localhost:5000/dashboard/todos/${id}`, {
-        headers: { jwt_token: localStorage.getItem('token') },
+        headers: { token: localStorage.getItem('token') },
       })
 
       setTodos(todos.filter((todo) => todo.todo_id !== id))

@@ -12,7 +12,7 @@ const InputTodo = ({ setTodosChange }) => {
       await axios.post('http://localhost:5000/dashboard/todos', body, {
         headers: {
           'Content-Type': 'application/json',
-          jwt_token: localStorage.getItem('token'),
+          token: localStorage.getItem('token'),
         },
       })
 

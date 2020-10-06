@@ -24,7 +24,7 @@ export const login = (email, password) => async (dispatch) => {
 
   try {
     const res = await axios.post(
-      'http://localhost:5000/authentication/login',
+      'http://localhost:5000/auth/login',
       body,
       config
     )
@@ -35,15 +35,14 @@ export const login = (email, password) => async (dispatch) => {
       payload: res.data,
     })
 
+    // localStorage.setItem('token', res.data.token)
     toast.success('Logged in Successfully')
     // dispatch(loadUser())
   } catch (err) {
-    const errors = err.response.data.errors
+    console.log(err)
+    toast.error(err.message)
 
-    if (errors) {
-      toast.error(error.msg)
-    }
-
+    localStorage.removeItem('token')
     dispatch({
       type: LOGIN_FAIL,
     })
@@ -52,5 +51,7 @@ export const login = (email, password) => async (dispatch) => {
 
 // Logout / Clear Profile
 export const logout = () => (dispatch) => {
+  console.log('logout')
   dispatch({ type: LOGOUT })
+  localStorage.removeItem('token')
 }
